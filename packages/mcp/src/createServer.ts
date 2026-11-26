@@ -12,7 +12,7 @@ New project:
 1. create_project with the .fig path.
 2. get_design_summary, then get_frame_outline for each screen (one frame per breakpoint).
 3. Read AGENTS.md in the project (read_file): it holds the implementation rules.
-4. Implement with inspect_node as the reference for every measure, colour and font. Create a Vue component for each Figma component in use and for any repeated or self-contained structure. Use the generated tokens (app/assets/css/tokens.css), the media under /media, the collections under data/ and the detected icon libraries.
+4. Implement with inspect_node as the reference for every measure, colour and font. Create a Vue component for each Figma component in use and for any repeated or self-contained structure. Use the generated tokens (app/assets/css/tokens.css), the media under /media, the collections through useCollection('<name>') (MongoDB collections seeded from data/, read at build time) and the detected icon libraries.
 5. build_project after each screen and fix every error; start_preview and compare with render_frame.
 6. git_commit atomically with Conventional Commits, then mark_implemented.
 

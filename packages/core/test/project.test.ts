@@ -59,6 +59,11 @@ describe('project lifecycle', () => {
         'design/theme.json',
         `media/images/${HASH_A}.png`,
         'data/cards.json',
+        'server/utils/collections.ts',
+        'server/api/collections/[name].get.ts',
+        'app/composables/useCollection.ts',
+        'scripts/seed.mjs',
+        '.env.example',
       ]),
     )
     expect(await files.readJson('data/cards.json')).toHaveLength(3)
@@ -66,7 +71,10 @@ describe('project lifecycle', () => {
       fonts: [{ name: 'Inter', weights: [400, 500, 700], styles: ['normal'] }],
       iconCollections: ['lucide'],
     })
-    expect(await files.readJson<{ devDependencies: object }>('package.json')).toMatchObject({ devDependencies: { '@iconify-json/lucide': expect.any(String) } })
+    expect(await files.readJson<{ dependencies: object; devDependencies: object }>('package.json')).toMatchObject({
+      dependencies: { mongodb: expect.any(String) },
+      devDependencies: { '@iconify-json/lucide': expect.any(String) },
+    })
     const tokens = await files.readText('app/assets/css/tokens.css')
     expect(tokens).toContain('--color-brand-primary: #4f46e5;')
     expect(tokens).toContain('.text-64-700 {')
