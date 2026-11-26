@@ -25,6 +25,8 @@ export interface FrameDiff {
   page: string
   frameId: string
   frame: string
+  /** Design width of the frame, i.e. the viewport to render it at. */
+  width: number
   status: 'added' | 'removed' | 'changed'
   layers: LayerChange[]
 }
@@ -134,7 +136,7 @@ export function diffDesign(
   const stats = { added: 0, removed: 0, changed: 0, moved: 0, frames: 0 }
 
   const frameDiff = (entry: Entry, status: FrameDiff['status']) => {
-    const diff = frames.get(entry.frame.id) ?? { page: entry.page, frameId: entry.frame.id, frame: entry.frame.name, status, layers: [] }
+    const diff = frames.get(entry.frame.id) ?? { page: entry.page, frameId: entry.frame.id, frame: entry.frame.name, width: entry.frame.box.width, status, layers: [] }
     frames.set(entry.frame.id, diff)
     return diff
   }
