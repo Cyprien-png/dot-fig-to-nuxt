@@ -150,12 +150,12 @@ export class DesignInspector {
     return lines.join('\n')
   }
 
-  /** Standalone HTML reference render of a frame or layer. */
-  render(id: string): string {
+  /** Standalone HTML reference render of a frame or layer; `mediaBase` is the URL prefix of the media folder. */
+  render(id: string, mediaBase = 'media/'): string {
     const { node } = this.locate(id)
     const page = this.document.pages.find((candidate) => candidate.children.some((frame) => frame.id === id))
     return renderFrameHtml(node, {
-      mediaUrl: (hash) => this.mediaUrl(hash).slice(1),
+      mediaUrl: (hash) => mediaBase + this.mediaUrl(hash).slice('/media/'.length),
       fonts: this.summary.typography.families,
       background: page?.background,
     })

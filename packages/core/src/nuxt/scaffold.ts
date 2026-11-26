@@ -181,6 +181,7 @@ const GITIGNORE = `node_modules/
 .nitro/
 .cache/
 dist/
+design/.renders/
 *.log
 .env
 .env.*
