@@ -4,6 +4,7 @@ import { isMediaPaint, type Box, type DesignDocument, type DesignNode, type Inte
 import { indexDocument, parentMap, walk, type NodeIndex } from '../design/traverse.ts'
 import type { DesignSummary } from '../extract/analyze.ts'
 import { renderFrameHtml } from '../render/html.ts'
+import { nodeToSvg } from '../render/svg.ts'
 
 export class NodeNotFoundError extends Error {}
 
@@ -161,6 +162,11 @@ export class DesignInspector {
       fonts: this.summary.typography.families,
       background: page?.background,
     })
+  }
+
+  /** A vector layer or icon frame as a standalone SVG (single-colour artwork uses `currentColor`). */
+  svg(id: string): string {
+    return nodeToSvg({ ...this.locate(id).node, rotation: undefined })
   }
 
   /** Case-insensitive search in layer names and text content of the design pages. */

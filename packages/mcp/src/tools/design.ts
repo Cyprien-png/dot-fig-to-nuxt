@@ -93,6 +93,19 @@ export function registerDesignTools(context: ToolContext): void {
     return { path, absolutePath: files.resolve(path) }
   })
 
+  defineTool(context, 'export_svg', {
+    title: 'Export a layer as SVG',
+    description:
+      'Exports a vector layer or a whole icon frame (all its vector children) as media/icons/<name>.svg and returns its path and /media URL. Single-colour artwork uses currentColor so it can be tinted from CSS. Use it for icons and illustrations that were not exported automatically.',
+    input: { project, nodeId, name: z.string().regex(/^[a-z0-9][a-z0-9-]*$/).describe('File name without extension, kebab-case'), version },
+  }, async ({ project, nodeId, name, version }) => {
+    const svg = (await workspace.inspector(project, version)).svg(nodeId)
+    if (!svg.includes('<path')) throw new Error(`Layer ${nodeId} has no vector geometry to export`)
+    const path = `media/icons/${name}.svg`
+    await workspace.projects.files(project).write(path, svg)
+    return { path, url: `/${path}` }
+  })
+
   defineTool(context, 'get_design_diff', {
     title: 'Get design diff',
     description:

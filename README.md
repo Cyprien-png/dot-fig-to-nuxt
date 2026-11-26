@@ -74,7 +74,7 @@ Without `MONGODB_URI` the build falls back to the seed files, which keeps CI and
 | Area | Tools |
 | --- | --- |
 | Projects | `list_projects` `create_project` `get_project` `import_design` `mark_implemented` |
-| Design | `get_design_summary` `get_frame_outline` `inspect_node` `search_layers` `render_frame` `get_design_diff` |
+| Design | `get_design_summary` `get_frame_outline` `inspect_node` `search_layers` `render_frame` `export_svg` `get_design_diff` |
 | Files | `list_files` `read_file` `write_file` `delete_file` (sandboxed to the project) |
 | Git | `git_status` `git_diff` `git_commit` `git_log` `git_set_remote` `git_push` (Conventional Commits enforced) |
 | Build | `build_project` `get_build` `start_preview` `stop_preview` |

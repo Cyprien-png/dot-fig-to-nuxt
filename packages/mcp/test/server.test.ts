@@ -62,6 +62,9 @@ describe('MCP server', () => {
     expect((await call('get_frame_outline', { project: 'demo', nodeId: frameId })).text).toContain('instance of "Card"')
     expect((await call('inspect_node', { project: 'demo', nodeId: frameId, depth: 1 })).json().css.display).toBe('flex')
 
+    expect((await call('export_svg', { project: 'demo', nodeId: '1:20', name: 'arrow' })).json()).toEqual({ path: 'media/icons/arrow.svg', url: '/media/icons/arrow.svg' })
+    expect((await call('read_file', { project: 'demo', path: 'media/icons/arrow.svg' })).text).toContain('<path')
+
     await call('write_file', { project: 'demo', path: 'app/components/AppCard.vue', content: '<template><article /></template>\n' })
     expect((await call('git_commit', { project: 'demo', message: 'wip' })).isError).toBe(true)
     expect((await call('git_commit', { project: 'demo', message: 'feat(card): add card component' })).json().committed).toBeTruthy()
