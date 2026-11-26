@@ -15,12 +15,6 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    env:
-      # The project tests create real git repositories and commits.
-      GIT_AUTHOR_NAME: ci
-      GIT_AUTHOR_EMAIL: ci@example.invalid
-      GIT_COMMITTER_NAME: ci
-      GIT_COMMITTER_EMAIL: ci@example.invalid
     steps:
       - uses: actions/checkout@v7
         with:
