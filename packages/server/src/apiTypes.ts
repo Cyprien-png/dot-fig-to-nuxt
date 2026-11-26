@@ -12,6 +12,8 @@ export interface ProjectCard {
   /** A design version is imported but the code does not implement it yet. */
   pending: boolean
   hasThumbnail: boolean
+  /** The top of the home page: the frame to render as the project cover. */
+  cover?: { nodeId: string; width: number }
   colors: string[]
   fonts: string[]
   stats: DesignSummary['stats'] | undefined

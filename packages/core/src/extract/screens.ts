@@ -73,6 +73,11 @@ export function extractScreens(document: DesignDocument): Screen[] {
   return [...screens.values()]
 }
 
+/** The frame that best shows the project: the widest variant of the home screen. */
+export function coverFrame(screens: Screen[]): ScreenVariant | undefined {
+  return (screens.find((screen) => screen.route === '/') ?? screens[0])?.variants[0]
+}
+
 /** Distinct design widths per breakpoint, i.e. the widths to verify the build at. */
 export function breakpointWidths(screens: Screen[]): Partial<Record<Breakpoint, number[]>> {
   const widths: Partial<Record<Breakpoint, number[]>> = {}

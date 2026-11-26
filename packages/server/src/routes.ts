@@ -1,4 +1,4 @@
-import { latestVersion, PROJECT_PATHS, type FigUpload, type ProjectManifest, type Workspace } from '@fig2nuxt/core'
+import { coverFrame, latestVersion, PROJECT_PATHS, type FigUpload, type ProjectManifest, type Workspace } from '@fig2nuxt/core'
 import { Hono, type Context } from 'hono'
 import { getMimeType } from 'hono/utils/mime'
 import type { CollectionWithItems, ProjectCard, ProjectDetail } from './apiTypes.ts'
@@ -25,11 +25,13 @@ export function createApi(workspace: Workspace): Hono {
 
   const card = async (manifest: ProjectManifest): Promise<ProjectCard> => {
     const summary = await projects.summary(manifest.slug).catch(() => undefined)
+    const cover = coverFrame(summary?.screens ?? [])
     return {
       manifest,
       latestVersion: latestVersion(manifest),
       pending: latestVersion(manifest) > manifest.implementedVersion,
       hasThumbnail: await projects.files(manifest.slug).exists(PROJECT_PATHS.thumbnail),
+      ...(cover && { cover: { nodeId: cover.nodeId, width: cover.width } }),
       colors: (summary?.colors ?? []).slice(0, CARD_COLORS).map((color) => color.value),
       fonts: (summary?.typography.families ?? []).map((family) => family.family),
       stats: summary?.stats,

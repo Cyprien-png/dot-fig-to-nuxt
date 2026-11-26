@@ -41,6 +41,7 @@ describe('dashboard API', () => {
       manifest: { slug: 'demo-site' },
       latestVersion: 1,
       pending: true,
+      cover: { nodeId: '1:30', width: 1440 },
       colors: expect.arrayContaining(['#4f46e5']),
       fonts: ['Inter'],
     })
