@@ -23,8 +23,10 @@ async function create(file: File, name: string) {
 <template>
   <main class="container home">
     <section class="hero">
-      <p class="eyebrow">Figma file in · static Nuxt site out</p>
-      <h1 class="display hero__title">Every design,<br /><em>shipped as code.</em></h1>
+      <div class="hero__intro">
+        <p class="eyebrow">Figma file in · static Nuxt site out</p>
+        <h1 class="display hero__title">Every design,<br /><em>shipped as code.</em></h1>
+      </div>
       <div class="hero__bar">
         <dl class="hero__stats">
           <div>
@@ -61,17 +63,27 @@ async function create(file: File, name: string) {
 
 <style scoped>
 .home {
-  padding-bottom: 8rem;
+  padding-bottom: 3rem;
 }
 
 .hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
+  margin-bottom: 2rem;
+  padding-block: clamp(1.5rem, 3vw, 2.5rem) 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero__intro {
   display: grid;
-  gap: 2rem;
-  padding-block: clamp(3rem, 9vw, 8rem) clamp(2rem, 5vw, 4rem);
+  gap: 0.75rem;
 }
 
 .hero__title {
-  font-size: clamp(3.2rem, 11vw, 11rem);
+  font-size: clamp(2.25rem, 4.6vw, 4.25rem);
 }
 
 .hero__title em {
@@ -82,25 +94,22 @@ async function create(file: File, name: string) {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--line);
+  gap: 1.5rem 3rem;
 }
 
 .hero__stats {
   display: flex;
-  gap: clamp(2rem, 6vw, 6rem);
+  gap: clamp(1.5rem, 3vw, 3rem);
 }
 
 .hero__stats dd {
-  font-size: 3rem;
+  font-size: 2.25rem;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
-  gap: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 3vw, 3rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 2rem 1.5rem;
 }
 
 .grid li {

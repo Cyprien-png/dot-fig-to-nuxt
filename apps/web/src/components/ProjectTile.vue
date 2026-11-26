@@ -40,7 +40,7 @@ defineProps<{ project: ProjectCard; index: number }>()
 <style scoped>
 .tile {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.7rem;
 }
 
 .tile__visual {
@@ -67,7 +67,7 @@ defineProps<{ project: ProjectCard; index: number }>()
   display: grid;
   height: 100%;
   place-items: center;
-  font-size: clamp(4rem, 12vw, 9rem);
+  font-size: clamp(3rem, 6vw, 4.5rem);
   text-transform: uppercase;
   color: var(--line-strong);
 }
@@ -116,17 +116,20 @@ defineProps<{ project: ProjectCard; index: number }>()
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: baseline;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .tile__name {
-  font-size: 1.35rem;
+  overflow: hidden;
+  font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: -0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tile__facts {
   margin-top: -0.5rem;
-  padding-left: calc(2ch + 1rem);
+  padding-left: calc(2ch + 0.75rem);
 }
 </style>
