@@ -32,8 +32,9 @@ projects/<slug>/
 │  ├─ summary.json        screens, palette, typography, icons, components
 │  └─ theme.json          design tokens consumed by nuxt.config.ts
 ├─ media/                 images, videos, audio and custom icons from the design
-├─ data/                  repeated content ("collections") as JSON
+├─ data/                  seed records of the content collections (JSON)
 ├─ app/                   the Nuxt application
+├─ server/, scripts/      build-time MongoDB access and the seed script
 └─ .github/workflows/     CI building the static site on every push
 ```
 
@@ -53,8 +54,14 @@ Importing a file whose decoded content is identical to the current version is re
 | Icons | icon libraries matched to their Iconify set for `@nuxt/icon`; other vectors exported as SVG |
 | Components | Figma components, variants, properties and instance counts |
 | Media | images embedded in the file, stored once by content hash |
-| Collections | repeated instances or lookalike siblings, as `data/*.json` |
+| Collections | repeated instances or lookalike siblings, as MongoDB collections seeded from `data/*.json` |
 | Interactions | prototype links and transitions on each layer |
+
+### Collections and MongoDB
+
+Collections are MongoDB collections by default. `data/<name>.json` holds the records found in the design; `npm run db:seed` (in the project) loads them into the database set by `MONGODB_URI` / `MONGODB_DB`, and pages read them with `useCollection('<name>')`. The database is queried while the site is generated and the records are baked into the static pages, so the hosted site needs no database and no server.
+
+Without `MONGODB_URI` the build falls back to the seed files, which keeps CI and a first build working before a database exists.
 
 ## MCP server
 
