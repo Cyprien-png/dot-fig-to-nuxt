@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dot-fig-to-nuxt": {
+      "command": "node",
+      "args": ["--import", "tsx", "packages/mcp/src/main.ts"]
+    }
+  }
+}
