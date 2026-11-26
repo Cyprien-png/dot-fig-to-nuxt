@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { mkdir, readdir, stat } from 'node:fs/promises'
+import { mkdir, readdir, rm, stat } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import type { DesignDocument } from '../design/model.ts'
 import { slugify } from '../design/traverse.ts'
@@ -77,6 +77,13 @@ export class ProjectService {
     } catch {
       throw new ProjectNotFoundError(`Unknown project: ${slug}`)
     }
+  }
+
+  /** Deletes a project and its whole repository from disk. Anything not pushed is lost. */
+  async remove(slug: string): Promise<void> {
+    await this.get(slug)
+    this.documents.delete(slug)
+    await rm(this.directory(slug), { recursive: true, force: true, maxRetries: 3 })
   }
 
   /** Creates the repository, scaffolds the Nuxt project and imports the first design version. */
