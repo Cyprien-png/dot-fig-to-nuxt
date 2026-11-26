@@ -17,6 +17,8 @@ export interface RepositoryStatus {
   ahead: number
 }
 
+const FALLBACK_IDENTITY = { 'user.name': 'fig2nuxt', 'user.email': 'fig2nuxt@localhost' }
+
 /** The git operations a project needs, and nothing else. */
 export class GitRepository {
   private readonly git: SimpleGit
@@ -29,6 +31,15 @@ export class GitRepository {
     await this.git.init(['--initial-branch=main'])
     // Projects are generated on any OS: keep line endings stable so diffs stay meaningful.
     await this.git.addConfig('core.autocrlf', 'false')
+    await this.ensureIdentity()
+  }
+
+  /** Commits fail on a machine without a git identity (CI, fresh install): fall back to a local one. */
+  private async ensureIdentity(): Promise<void> {
+    for (const [key, fallback] of Object.entries(FALLBACK_IDENTITY)) {
+      const { value } = await this.git.getConfig(key)
+      if (!value) await this.git.addConfig(key, fallback)
+    }
   }
 
   /** Commits the given paths (everything when omitted). Returns the hash, or `undefined` when there was nothing to commit. */
