@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+*.log
+.env
+.env.*
+.DS_Store
+
+# Generated Nuxt projects live here, each one in its own git repository.
+/projects/

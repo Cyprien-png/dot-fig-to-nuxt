@@ -1,0 +1,40 @@
+{
+  "name": "dot-fig-to-nuxt",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Turn Figma .fig files into versioned, statically generated Nuxt projects, driven by an agent over MCP.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,magenta \"npm run dev -w @fig2nuxt/server\" \"npm run dev -w @fig2nuxt/web\"",
+    "build": "npm run build -w @fig2nuxt/web",
+    "start": "npm run start -w @fig2nuxt/server",
+    "mcp": "npm run start -w @fig2nuxt/mcp",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit && npm run typecheck -w @fig2nuxt/web",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.19.0",
+    "concurrently": "^10.0.7",
+    "eslint": "^10.15.0",
+    "eslint-plugin-vue": "^10.12.1",
+    "globals": "^17.14.0",
+    "husky": "^9.1.7",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.0",
+    "typescript-eslint": "^8.74.0",
+    "vitest": "^5.1.2"
+  }
+}
