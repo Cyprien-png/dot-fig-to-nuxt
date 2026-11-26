@@ -44,7 +44,7 @@ async function copy(color: ColorToken) {
 
 .swatches {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   overflow: hidden;
   border-radius: var(--radius);
 }
@@ -54,7 +54,7 @@ async function copy(color: ColorToken) {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 190px;
+  height: 120px;
   padding: 0.9rem;
   border: 0;
   color: #fff;

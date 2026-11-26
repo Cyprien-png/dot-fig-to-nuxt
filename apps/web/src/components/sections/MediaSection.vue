@@ -32,7 +32,7 @@ const total = computed(() => props.media.reduce((sum, file) => sum + file.size, 
 <style scoped>
 .media {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 1.5rem 1rem;
 }
 

@@ -47,7 +47,8 @@ defineProps<{ slug: string; summary: DesignSummary }>()
 
 .screens {
   display: grid;
-  gap: clamp(2.5rem, 5vw, 5rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr));
+  gap: 2rem 1.5rem;
 }
 
 .screen__head {
@@ -58,7 +59,7 @@ defineProps<{ slug: string; summary: DesignSummary }>()
 }
 
 .screen__name {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: -0.02em;
 }
@@ -67,20 +68,20 @@ defineProps<{ slug: string; summary: DesignSummary }>()
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .variant {
-  flex: 1 1 520px;
+  flex: 1 1 300px;
   min-width: 0;
 }
 
 .variant--mobile {
-  flex: 0 1 260px;
+  flex: 0 1 110px;
 }
 
 .variant--tablet {
-  flex: 0 1 420px;
+  flex: 0 1 190px;
 }
 
 .variant__caption {

@@ -104,7 +104,7 @@ const MAX_SPECIMEN_SIZE = 72
 }
 
 .family__specimen {
-  font-size: 5rem;
+  font-size: 3rem;
   line-height: 1;
 }
 

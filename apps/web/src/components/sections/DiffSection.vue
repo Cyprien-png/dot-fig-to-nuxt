@@ -165,7 +165,7 @@ function describe(value: unknown): { text: string; colors: string[] } {
 }
 
 .stats dd {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: 2.25rem;
 }
 
 .stats--added {

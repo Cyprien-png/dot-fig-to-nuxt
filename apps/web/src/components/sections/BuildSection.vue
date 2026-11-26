@@ -123,7 +123,7 @@ onBeforeUnmount(() => clearTimeout(timer))
 }
 
 .console__log {
-  height: 380px;
+  height: 300px;
   margin: 0;
   padding: 1rem;
   overflow: auto;

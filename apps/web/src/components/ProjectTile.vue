@@ -2,6 +2,7 @@
 import type { ProjectCard } from '@fig2nuxt/server/api'
 import { RouterLink } from 'vue-router'
 import { urls } from '../api.ts'
+import FramePreview from './FramePreview.vue'
 import { formatDate, pad } from '../format.ts'
 
 defineProps<{ project: ProjectCard; index: number }>()
@@ -10,8 +11,14 @@ defineProps<{ project: ProjectCard; index: number }>()
 <template>
   <RouterLink :to="{ name: 'project', params: { slug: project.manifest.slug } }" class="tile">
     <div class="tile__visual">
+      <FramePreview
+        v-if="project.cover"
+        :src="urls.render(project.manifest.slug, project.cover.nodeId, project.latestVersion)"
+        :title="`Home page of ${project.manifest.name}`"
+        :width="project.cover.width"
+      />
       <img
-        v-if="project.hasThumbnail"
+        v-else-if="project.hasThumbnail"
         :src="urls.thumbnail(project.manifest.slug, project.latestVersion)"
         :alt="`Thumbnail of ${project.manifest.name}`"
         loading="lazy"
@@ -50,6 +57,16 @@ defineProps<{ project: ProjectCard; index: number }>()
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+}
+
+/* The cover is a live render: it fills the visual and lets clicks reach the link. */
+.tile__visual :deep(.preview) {
+  border: 0;
+  border-radius: 0;
+}
+
+.tile__visual :deep(iframe) {
+  pointer-events: none;
 }
 
 .tile__visual img {

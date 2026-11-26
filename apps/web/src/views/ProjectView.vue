@@ -40,8 +40,7 @@ const NAV = [
   ['history', 'Repository'],
 ] as const
 
-const heroFrame = computed(() => project.value?.summary.screens[0]?.variants[0])
-const desktopWidth = computed(() => project.value?.summary.breakpoints.desktop?.[0] ?? heroFrame.value?.width ?? 1440)
+const desktopWidth = computed(() => project.value?.summary.breakpoints.desktop?.[0] ?? project.value?.cover?.width ?? 1440)
 const facts = computed(() => {
   const stats = project.value?.summary.stats
   if (!project.value || !stats) return []
@@ -94,40 +93,41 @@ async function remove() {
 
     <template v-else>
       <section class="hero">
-        <div class="hero__top">
-          <p class="eyebrow">
-            <RouterLink to="/">Projects</RouterLink> / {{ project.manifest.slug }} · created {{ formatDate(project.manifest.createdAt) }}
+        <div class="hero__info">
+          <div class="hero__top">
+            <p class="eyebrow">
+              <RouterLink to="/">Projects</RouterLink> / {{ project.manifest.slug }} · created {{ formatDate(project.manifest.createdAt) }}
+            </p>
+            <div class="hero__actions">
+              <button type="button" class="btn" @click="importing = true">Import new .fig version</button>
+              <button v-if="project.pending" type="button" class="btn btn--accent" @click="markImplemented">Mark v{{ project.latestVersion }} as implemented</button>
+            </div>
+          </div>
+
+          <h1 class="display hero__title">{{ project.manifest.name }}</h1>
+          <p v-if="project.pending" class="hero__status">
+            <span class="chip chip--accent">Pending</span>
+            Design v{{ project.latestVersion }} is imported but the code implements
+            {{ project.manifest.implementedVersion ? `v${project.manifest.implementedVersion}` : 'nothing yet' }}.
+            <a href="#diff" class="hero__link">See the delta ↓</a>
           </p>
-          <div class="hero__actions">
-            <button type="button" class="btn" @click="importing = true">Import new .fig version</button>
-            <button v-if="project.pending" type="button" class="btn btn--accent" @click="markImplemented">Mark v{{ project.latestVersion }} as implemented</button>
-          </div>
+          <p v-if="actionError" class="error" role="alert">{{ actionError }}</p>
+
+          <dl class="facts">
+            <div v-for="[label, value] in facts" :key="label">
+              <dt class="eyebrow">{{ label }}</dt>
+              <dd class="facts__value">{{ value }}</dd>
+            </div>
+          </dl>
         </div>
-
-        <h1 class="display hero__title">{{ project.manifest.name }}</h1>
-        <p v-if="project.pending" class="hero__status">
-          <span class="chip chip--accent">Pending</span>
-          Design v{{ project.latestVersion }} is imported but the code implements
-          {{ project.manifest.implementedVersion ? `v${project.manifest.implementedVersion}` : 'nothing yet' }}.
-          <a href="#diff" class="hero__link">See the delta ↓</a>
-        </p>
-        <p v-if="actionError" class="error" role="alert">{{ actionError }}</p>
-
-        <dl class="facts">
-          <div v-for="[label, value] in facts" :key="label">
-            <dt class="eyebrow">{{ label }}</dt>
-            <dd class="facts__value">{{ value }}</dd>
-          </div>
-        </dl>
 
         <div class="hero__visual">
           <FramePreview
-            v-if="heroFrame"
+            v-if="project.cover"
             :key="project.latestVersion"
-            :src="urls.render(slug, heroFrame.nodeId)"
+            :src="urls.render(slug, project.cover.nodeId)"
             :title="`${project.manifest.name}, reference render`"
-            :width="heroFrame.width"
-            :ratio="16 / 9"
+            :width="project.cover.width"
           />
           <img v-else-if="project.hasThumbnail" :src="urls.thumbnail(slug, project.latestVersion)" :alt="`Thumbnail of ${project.manifest.name}`" />
           <ul class="hero__palette" aria-hidden="true">
@@ -181,13 +181,27 @@ async function remove() {
 
 <style scoped>
 .project {
-  padding-bottom: 6rem;
+  padding-bottom: 3rem;
 }
 
 .hero {
   display: grid;
-  gap: 2rem;
-  padding-block: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 2rem 3rem;
+  align-items: center;
+  padding-block: 1.5rem 2rem;
+}
+
+.hero__info {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+@media (width < 960px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .hero__top {
@@ -209,7 +223,7 @@ async function remove() {
 }
 
 .hero__title {
-  font-size: clamp(3rem, 12vw, 12rem);
+  font-size: clamp(2.25rem, 4.6vw, 4.25rem);
   overflow-wrap: anywhere;
 }
 
@@ -226,15 +240,15 @@ async function remove() {
 
 .facts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 1.5rem;
-  padding-block: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 1rem 1.5rem;
+  padding-block: 1rem;
   border-block: 1px solid var(--line);
 }
 
 .facts__value {
   margin-top: 0.3rem;
-  font-size: 1.6rem;
+  font-size: 1.25rem;
   font-weight: 500;
   letter-spacing: -0.02em;
 }

@@ -17,7 +17,7 @@
   --sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
 
-  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --gutter: clamp(1rem, 2vw, 2rem);
   --radius: 14px;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 
@@ -45,7 +45,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -86,8 +86,6 @@ ol {
 
 .container {
   width: 100%;
-  max-width: 1680px;
-  margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
@@ -119,8 +117,8 @@ ol {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  height: 40px;
-  padding-inline: 1.1rem;
+  height: 36px;
+  padding-inline: 1rem;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   background: transparent;
@@ -207,7 +205,7 @@ ol {
 }
 
 .section {
-  padding-block: clamp(3rem, 7vw, 6rem);
+  padding-block: 2.5rem;
   border-top: 1px solid var(--line);
 }
 
@@ -216,12 +214,12 @@ ol {
   align-items: baseline;
   justify-content: space-between;
   gap: 2rem;
-  margin-bottom: clamp(1.5rem, 3vw, 3rem);
+  margin-bottom: 1.5rem;
 }
 
 .section__title {
   font-family: var(--serif);
-  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  font-size: clamp(1.75rem, 2.4vw, 2.5rem);
   font-weight: 400;
   line-height: 1;
   letter-spacing: -0.02em;
