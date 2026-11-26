@@ -113,7 +113,7 @@ export function createApi(workspace: Workspace): Hono {
     const slug = c.req.param('slug')
     const inspector = await workspace.inspector(slug, optionalVersion(c.req.query('version')))
     // The render is design content: let it draw, never run scripts or reach the API.
-    c.header('content-security-policy', "sandbox; default-src 'none'; img-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com")
+    c.header('content-security-policy', "sandbox; default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com")
     return c.html(inspector.render(c.req.param('nodeId'), `/api/projects/${slug}/media/`))
   })
 
