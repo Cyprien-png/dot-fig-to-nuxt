@@ -80,7 +80,8 @@ export function textRangesOf(textData: RawNode | undefined, paints: (raw: RawNod
       const range: TextRange = { start, end: i, style: textStyleOf(override) }
       if (override.fillPaints) range.fills = paints(override.fillPaints)
       if (override.hyperlink?.url) range.link = override.hyperlink.url
-      ranges.push(range)
+      // Figma keeps table entries that override nothing visible: they are not ranges.
+      if (Object.keys(range.style).length || range.fills || range.link) ranges.push(range)
     }
     start = i
   }

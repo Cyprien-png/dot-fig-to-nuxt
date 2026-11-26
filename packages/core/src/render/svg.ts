@@ -1,4 +1,4 @@
-import { colorWithOpacity } from '../css/nodeStyle.ts'
+import { colorWithOpacity } from '../css/color.ts'
 import { isMediaPaint, isSolidPaint, type DesignNode, type Paint } from '../design/model.ts'
 
 const escapeXml = (value: string) => value.replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]!)

@@ -23,7 +23,8 @@ function textHtml(text: TextContent, options: StyleOptions): string {
 }
 
 function renderNode(node: DesignNode, parent: DesignNode | undefined, options: StyleOptions): string {
-  if (node.visible === false) return ''
+  // A mask layer is not drawn: its parent carries the equivalent CSS mask.
+  if (node.visible === false || node.mask) return ''
   const style = escapeXml(toInlineStyle(nodeStyle(node, parent, options)))
   const attributes = `data-node-id="${escapeXml(node.id)}" data-name="${escapeXml(node.name)}"`
 

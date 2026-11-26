@@ -1,18 +1,12 @@
 import { isMediaPaint, isSolidPaint, type DesignNode, type Effect, type Paint, type TextStyle } from '../design/model.ts'
+import { colorWithOpacity, px } from './color.ts'
+import { maskDeclarations } from './mask.ts'
 
 export type CssDeclarations = Record<string, string>
 
 export interface StyleOptions {
   /** Resolves a media hash to the URL it is served from. */
   mediaUrl: (hash: string) => string
-}
-
-const px = (value: number) => (value === 0 ? '0' : `${Math.round(value * 100) / 100}px`)
-
-export function colorWithOpacity(hex: string, opacity: number): string {
-  if (opacity >= 1) return hex
-  const [r, g, b] = [1, 3, 5].map((start) => parseInt(hex.slice(start, start + 2), 16))
-  return `rgba(${r}, ${g}, ${b}, ${opacity})`
 }
 
 const JUSTIFY: Record<string, string> = {
@@ -120,7 +114,9 @@ function flowChild(node: DesignNode, parent: DesignNode): CssDeclarations {
   const hugsWidth = hugsText || hugs(ownHorizontal ? 'primary' : 'counter')
   const hugsHeight = Boolean(node.text && node.text.autoResize !== 'NONE') || hugs(ownHorizontal ? 'counter' : 'primary')
 
-  if (layout.mode === 'GRID') return { 'min-width': '0' }
+  // Positioned so that paint order follows layer order, even next to absolute siblings.
+  css.position = 'relative'
+  if (layout.mode === 'GRID') return { ...css, 'min-width': '0' }
   if (grow) css.flex = '1 0 0'
   if (stretch) css['align-self'] = 'stretch'
   if (!hugsWidth && !(horizontal ? grow : stretch)) css.width = px(node.box.width)
@@ -184,7 +180,6 @@ export function nodeStyle(node: DesignNode, parent: DesignNode | undefined, opti
     if (layout.padding.some(Boolean)) css.padding = layout.padding.map(px).join(' ')
     css['box-sizing'] = 'border-box'
   }
-  if (node.children?.length && !css.position && (inFlow || !parent)) css.position = 'relative'
   if (node.minSize?.width) css['min-width'] = px(node.minSize.width)
   if (node.maxSize?.width) css['max-width'] = px(node.maxSize.width)
 
@@ -210,6 +205,7 @@ export function nodeStyle(node: DesignNode, parent: DesignNode | undefined, opti
     } else Object.assign(css, shadows(node.effects, Boolean(node.text)))
   }
   if (node.clips) css.overflow = 'hidden'
+  Object.assign(css, maskDeclarations(node))
   if (node.blendMode) css['mix-blend-mode'] = node.blendMode.toLowerCase().replace(/_/g, '-')
   if (node.rotation) Object.assign(css, { transform: `rotate(${node.rotation}deg)`, 'transform-origin': '0 0' })
   return css

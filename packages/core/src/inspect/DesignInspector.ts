@@ -114,7 +114,8 @@ export class DesignInspector {
     if (media.length) result.media = media
     if (node.interactions?.length) result.interactions = node.interactions
 
-    const children = (node.children ?? []).filter((child) => child.visible !== false)
+    // Mask layers are folded into the parent's CSS (mask or clip-path).
+    const children = (node.children ?? []).filter((child) => child.visible !== false && !child.mask)
     // An icon is used as a whole: its vector layers are noise.
     if (!children.length || icon) return result
     if (depth <= 0) result.hiddenChildren = children.length
@@ -135,6 +136,7 @@ export class DesignInspector {
     const visit = (node: DesignNode, level: number) => {
       if (node.visible === false || lines.length >= MAX_OUTLINE_LINES) return
       const details = [
+        node.mask && 'mask of the next siblings',
         `${Math.round(node.box.width)}×${Math.round(node.box.height)}`,
         node.layout && (node.layout.mode === 'GRID' ? 'grid' : `flex-${node.layout.mode === 'HORIZONTAL' ? 'row' : 'column'} gap ${node.layout.gap}`),
         this.componentName(node) && `instance of "${this.componentName(node)}"`,

@@ -28,8 +28,16 @@ describe('nodeStyle', () => {
   it('keeps flex children in the flow and lets hugging text size itself', () => {
     const headline = nodeStyle(index.get('1:31')!, desktop, options)
     expect(headline).toMatchObject({ 'font-family': '"Inter", sans-serif', 'font-size': '64px', 'font-weight': '700', color: '#111827' })
-    expect(headline).not.toHaveProperty('position')
+    expect(headline.position).toBe('relative')
     expect(headline).not.toHaveProperty('width')
+  })
+
+  it('turns a mask layer into a css mask on its parent', () => {
+    const icon = index.get('1:20')!
+    const group = { ...icon, children: [{ ...icon.children![0]!, mask: true }, { ...mobile, id: 'fill', box: { x: 0, y: 0, width: 24, height: 24 } }] }
+    const css = nodeStyle(group, undefined, options)
+    expect(css.mask).toMatch(/^url\("data:image\/svg\+xml,.+"\) 4px 4px \/ 16px 16px no-repeat$/)
+    expect(renderFrameHtml(group, options)).not.toContain('data-name="Vector"')
   })
 
   it('positions children of plain frames absolutely', () => {
