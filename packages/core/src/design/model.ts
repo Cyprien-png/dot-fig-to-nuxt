@@ -18,16 +18,34 @@ export interface GradientStop {
   position: number
 }
 
-export type Paint =
-  | { type: 'SOLID'; color: string; opacity: number; variable?: string }
-  | {
-      type: 'GRADIENT_LINEAR' | 'GRADIENT_RADIAL' | 'GRADIENT_ANGULAR' | 'GRADIENT_DIAMOND'
-      stops: GradientStop[]
-      opacity: number
-      /** CSS angle in degrees, only meaningful for linear gradients. */
-      angle: number
-    }
-  | { type: 'IMAGE' | 'VIDEO'; hash: string; scaleMode: string; opacity: number; alt?: string }
+export interface SolidPaint {
+  type: 'SOLID'
+  color: string
+  opacity: number
+  /** Id of the variable the colour is bound to. */
+  variable?: string
+}
+
+export interface GradientPaint {
+  type: 'GRADIENT_LINEAR' | 'GRADIENT_RADIAL' | 'GRADIENT_ANGULAR' | 'GRADIENT_DIAMOND'
+  stops: GradientStop[]
+  opacity: number
+  /** CSS angle in degrees, only meaningful for linear gradients. */
+  angle: number
+}
+
+export interface MediaPaint {
+  type: 'IMAGE' | 'VIDEO'
+  hash: string
+  scaleMode: string
+  opacity: number
+  alt?: string
+}
+
+export type Paint = SolidPaint | GradientPaint | MediaPaint
+
+export const isSolidPaint = (paint: Paint): paint is SolidPaint => paint.type === 'SOLID'
+export const isMediaPaint = (paint: Paint): paint is MediaPaint => paint.type === 'IMAGE' || paint.type === 'VIDEO'
 
 export interface Stroke {
   paints: Paint[]
