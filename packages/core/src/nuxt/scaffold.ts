@@ -405,7 +405,7 @@ const USE_COLLECTION = `/**
  * Records of a content collection. They are read from MongoDB while the site is
  * generated and inlined in the page payload: the deployed site never queries the database.
  */
-export function useCollection<T extends Record<string, string> = Record<string, string>>(name: string) {
+export function useCollection<T extends object = Record<string, unknown>>(name: string) {
   return useAsyncData(\`collection:\${name}\`, () => $fetch<T[]>(\`/api/collections/\${name}\`), { default: () => [] as T[] })
 }
 `
